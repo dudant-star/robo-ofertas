@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Entrando no grupo…</title>
+<style>body{margin:0;min-height:100vh;display:grid;place-items:center;font:16px system-ui,sans-serif;background:#ffffff;color:#36244e;text-transform:uppercase;letter-spacing:.08em}</style>
+</head>
+<body>
+<p id="msg">Abrindo o grupo…</p>
+<script>
+/* Link de entrada com rotação: seusite.com.br/entrar.html?canal=whatsapp&src=insta
+   Pega o grupo ativo com vaga (função proximo_grupo) e redireciona.
+   Use ESTE link nos posts, na bio e no rodapé das mensagens. */
+const SUPABASE_URL = "";        // mesmo valor do CONFIG do index.html
+const SUPABASE_ANON = "";
+const FALLBACK = { whatsapp: "https://chat.whatsapp.com/SEU-CONVITE", telegram: "https://t.me/SEU-CANAL" };
+
+(async () => {
+  const p = new URLSearchParams(location.search);
+  const canal = p.get("canal") === "telegram" ? "telegram" : "whatsapp";
+  let destino = FALLBACK[canal];
+  const H = Object.assign({ apikey: SUPABASE_ANON, "Content-Type": "application/json" }, SUPABASE_ANON.startsWith("eyJ") ? { Authorization: `Bearer ${SUPABASE_ANON}` } : {});
+  // Conta a entrada e de onde a pessoa veio (?src=insta, tiktok…)
+  try {
+    fetch(`${SUPABASE_URL}/rest/v1/cliques`, { method: "POST", keepalive: true,
+      headers: Object.assign({ Prefer: "return=minimal" }, H),
+      body: JSON.stringify({ origem: (p.get("src") || "direto").slice(0, 40), pagina: "entrada-" + canal }) }).catch(() => {});
+  } catch {}
+  try {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/proximo_grupo`, {
+      method: "POST",
+      headers: Object.assign({ apikey: SUPABASE_ANON, "Content-Type": "application/json" }, SUPABASE_ANON.startsWith("eyJ") ? { Authorization: `Bearer ${SUPABASE_ANON}` } : {}),
+      body: JSON.stringify({ p_canal: canal })
+    });
+    const link = await r.json();
+    if (typeof link === "string" && link) destino = link;
+  } catch {}
+  location.replace(destino);
+})();
+</script>
+</body>
+</html>

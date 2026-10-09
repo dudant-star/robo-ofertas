@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Eh Meu Aí</title>
+<meta name="description" content="A AI que acha as melhores oportunidades pra você. Ofertas checadas em Amazon, Shopee e Mercado Livre.">
+<meta property="og:title" content="Eh Meu Aí">
+<meta property="og:description" content="A AI achou. Eh meu aí! Ofertas garimpadas e comparadas pela nossa AI.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,600;0,700;0,800;1,800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+<link rel="icon" type="image/png" href="img/icone.png">
+<style>
+/* EH MEU AÍ · Manual da marca v1.0
+   Layout: barra de aviso (Roxo Noite) · cabeçalho com wordmark e busca · hero escuro com mascote e números ·
+   filtros em cápsulas · grade de cards com preço dominante · página da oferta com selo "Achado da AI". */
+:root{
+  --noite:#190A31;          /* Roxo Noite · primário / fundos */
+  --profundo:#35145F;       /* Roxo Profundo · marca / contraste */
+  --violeta:#8D35F2;        /* Violeta AI · destaques / CTA */
+  --lavanda:#F1EAF7;        /* Lavanda · fundos / cards */
+  --branco:#FFFFFF;
+  --bg:#F8F5FC;
+  --surface:#FFFFFF;
+  --ink:#190A31;
+  --muted:#5F5375;
+  --line:#E6DCF1;
+  --chip:#FFFFFF;
+  --accent:#8D35F2;
+  --accent-ink:#FFFFFF;
+  --cta:#190A31;
+  --cta-ink:#FFFFFF;
+  --hero-a:#190A31; --hero-b:#35145F;
+  --zap:#1FA855;
+  --ph-a:#F1EAF7; --ph-b:#E4D6F3;
+  --shadow:0 1px 2px rgba(25,10,49,.05),0 10px 24px rgba(25,10,49,.07);
+  --f-display:"Poppins",ui-sans-serif,system-ui,sans-serif;
+  --f-body:"Plus Jakarta Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --r:18px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#110622; --surface:#1B0D34; --ink:#F1EAF7; --muted:#B6A8CC; --line:#2E1B4F; --chip:#1B0D34;
+  --accent:#A45BFF; --accent-ink:#FFFFFF; --cta:#8D35F2; --cta-ink:#FFFFFF;
+  --hero-a:#1E0C3B; --hero-b:#3A1768; --ph-a:#24123F; --ph-b:#2E1950;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 24px rgba(0,0,0,.35); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#110622; --surface:#1B0D34; --ink:#F1EAF7; --muted:#B6A8CC; --line:#2E1B4F; --chip:#1B0D34;
+  --accent:#A45BFF; --accent-ink:#FFFFFF; --cta:#8D35F2; --cta-ink:#FFFFFF;
+  --hero-a:#1E0C3B; --hero-b:#3A1768; --ph-a:#24123F; --ph-b:#2E1950;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 24px rgba(0,0,0,.35); color-scheme:dark}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 var(--f-body);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--violeta);outline-offset:2px;border-radius:8px}
+.wrap{max-width:1200px;margin:0 auto;padding-inline:16px}
+.num{font-variant-numeric:tabular-nums}
+
+/* Wordmark */
+.wm{display:inline-flex;align-items:center;gap:.22em;font:italic 800 26px/1 var(--f-display);letter-spacing:-.02em;text-transform:uppercase;white-space:nowrap}
+.wm .v{color:var(--violeta)}
+.wm .tag{position:relative;background:var(--violeta);color:#fff;padding:.12em .55em .12em .38em;border-radius:.22em;clip-path:polygon(0 0,82% 0,100% 50%,82% 100%,0 100%);font-style:italic}
+.wm .tag::after{content:"";position:absolute;right:.32em;top:50%;width:.16em;height:.16em;border-radius:50%;background:var(--profundo);transform:translateY(-50%)}
+
+/* Barra de aviso */
+.topbar{background:var(--noite);color:#E9DEF7;font-size:13px}
+.topbar .wrap{display:flex;align-items:center;gap:12px;padding-block:8px;flex-wrap:wrap}
+.topbar p{margin:0;flex:1 1 280px;min-width:0}
+.join{display:flex;gap:8px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1.5px solid transparent;border-radius:999px;padding:8px 16px;font:600 14px/1.2 var(--f-display);text-decoration:none;cursor:pointer;white-space:nowrap}
+.btn svg{width:17px;height:17px;flex:none}
+.btn-zap{background:var(--zap);color:#fff}
+.btn-gram{background:transparent;color:#fff;border-color:rgba(255,255,255,.35)}
+.btn-go{background:var(--cta);color:var(--cta-ink);width:100%;padding:11px 16px;font-size:15px}
+.btn-go:hover{background:var(--violeta);color:#fff}
+.btn-go .seta{margin-left:auto}
+.btn-ghost{background:transparent;border-color:var(--line);color:var(--ink)}
+.demo{background:var(--violeta);color:#fff;font-size:13px;font-weight:600;text-align:center;padding:6px 16px}
+
+/* Cabeçalho */
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--surface);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:20px;padding-block:12px;flex-wrap:wrap}
+.brand{text-decoration:none;color:var(--ink);margin-right:auto}
+.search{display:flex;align-items:center;gap:8px;background:var(--bg);border:1.5px solid var(--line);border-radius:999px;padding:0 16px;flex:0 1 420px;min-width:0;color:var(--muted)}
+.search input{border:0;background:transparent;color:var(--ink);font:inherit;font-size:15px;padding:10px 0;width:100%;min-width:0}
+.search input:focus{outline:none}
+.search:focus-within{border-color:var(--violeta)}
+
+/* Hero */
+.hero{position:relative;margin-block:24px 0;border-radius:24px;background:radial-gradient(120% 140% at 30% 0%,var(--hero-b) 0%,var(--hero-a) 62%);color:#fff;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px;padding:28px 32px;overflow:hidden}
+.pill{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);border-radius:999px;padding:5px 12px;font:600 12px/1 var(--f-display);letter-spacing:.08em;text-transform:uppercase;color:#E9DEF7}
+.hero h1{margin:14px 0 10px;font:800 clamp(30px,4.4vw,52px)/1 var(--f-display);text-transform:uppercase;letter-spacing:-.02em;text-wrap:balance}
+.hero h1 em{font-style:normal;color:#B57BFF}
+.hero p{margin:0;color:#DCCFF0;max-width:46ch;font-size:15.5px}
+.robo{width:100%;max-width:230px;justify-self:center;filter:drop-shadow(0 18px 30px rgba(0,0,0,.35))}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:18px;padding:18px 8px}
+.stat{display:grid;justify-items:center;gap:4px;text-align:center;padding:0 6px;border-left:1px solid rgba(255,255,255,.12)}
+.stat:first-child{border-left:0}
+.stat svg{width:26px;height:26px;color:#B57BFF}
+.stat b{font:800 30px/1 var(--f-display)}
+.stat span{font:600 11px/1.2 var(--f-display);letter-spacing:.06em;text-transform:uppercase;color:#CDBEE6}
+@media (max-width:900px){.hero{grid-template-columns:minmax(0,1fr) 150px;padding:22px}.stats{grid-column:1/-1}.robo{max-width:150px}}
+@media (max-width:520px){.hero{grid-template-columns:1fr}.robo{display:none}.stat b{font-size:24px}}
+
+/* Banner principal (desktop) e hero em HTML (celular) */
+.banner{display:block;width:100%;margin:24px 0 0;padding:0;border:0;border-radius:24px;overflow:hidden;cursor:pointer;background:var(--noite);box-shadow:var(--shadow)}
+.banner img{display:block;width:100%;height:auto;max-width:100%}
+.banner:hover img{filter:brightness(1.04)}
+@media (min-width:760px){.hero{display:none}}
+@media (max-width:759px){.banner{display:none}}
+/* Números abaixo do banner */
+.stats{margin-top:14px;background:var(--surface);border:1px solid var(--line);color:var(--ink);box-shadow:var(--shadow)}
+.stats .stat{border-left-color:var(--line)}
+.stats .stat svg{color:var(--violeta)}
+.stats .stat span{color:var(--muted)}
+
+/* Filtros */
+.filters{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;padding-block:18px 4px;min-width:0}
+#chips{display:grid;gap:10px;min-width:0}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{border:1.5px solid var(--line);background:var(--chip);border-radius:999px;padding:7px 16px;font:600 14px/1.2 var(--f-display);cursor:pointer;white-space:nowrap;color:var(--ink);display:inline-flex;align-items:center;gap:8px}
+.chip:hover{border-color:var(--violeta)}
+.chip[aria-pressed="true"]{background:var(--noite);color:#fff;border-color:var(--noite)}
+.chip i{width:9px;height:9px;border-radius:50%;display:inline-block}
+
+/* Cards */
+.feed{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px;padding-block:14px 40px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);display:flex;flex-direction:column;overflow:hidden;min-width:0;position:relative;box-shadow:var(--shadow)}
+.card.out{opacity:.55}
+.thumb{aspect-ratio:1/1;background:#fff;position:relative;display:grid;place-items:center;overflow:hidden;max-width:100%;margin:10px 10px 0;border-radius:12px}
+.thumb img{width:100%;height:100%;object-fit:contain;padding:10px}
+.ph{width:100%;height:100%;display:grid;place-items:center;background:linear-gradient(135deg,var(--ph-a),var(--ph-b));color:var(--violeta);font:700 16px/1.2 var(--f-display);text-align:center;padding:16px;text-transform:uppercase;letter-spacing:.06em}
+.off{position:absolute;top:10px;left:10px;background:var(--violeta);color:#fff;font:800 14px/1 var(--f-display);padding:6px 10px;border-radius:999px}
+.selo{position:absolute;top:10px;right:10px;background:var(--noite);color:#fff;font:700 10.5px/1 var(--f-display);letter-spacing:.08em;text-transform:uppercase;padding:6px 9px;border-radius:999px}
+.sold{position:absolute;inset:auto 0 0 0;background:var(--noite);color:#fff;font:700 12px/1 var(--f-display);text-align:center;padding:7px;text-transform:uppercase;letter-spacing:.1em}
+.body{padding:12px 14px 14px;display:flex;flex-direction:column;gap:8px;flex:1}
+.meta{display:flex;align-items:center;gap:8px;font:700 11.5px/1 var(--f-display);color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.store{display:inline-flex;align-items:center;gap:6px}
+.store i{width:9px;height:9px;border-radius:50%;display:inline-block}
+.meta .ago{margin-left:auto;text-transform:none;letter-spacing:0;font-weight:500}
+.title{margin:0;font-size:15px;font-weight:600;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.7em}
+.coupon{align-self:flex-start;background:var(--lavanda);color:var(--profundo);font:700 11.5px/1 var(--f-display);letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:5px 10px}
+.price{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-top:auto}
+.price s{color:var(--muted);font-size:13px}
+.price strong{font:800 24px/1 var(--f-display);color:var(--ink)}
+.card .stretch{position:absolute;inset:0;z-index:1}
+.card .btn-go{position:relative;z-index:2}
+.empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:48px 16px}
+.more{display:flex;justify-content:center;padding-bottom:40px}
+
+/* Página da oferta */
+.back{display:inline-flex;align-items:center;gap:6px;margin-block:18px 10px;font:600 14px/1 var(--f-display);color:var(--muted);text-decoration:none}
+.deal{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;background:var(--surface);border:1px solid var(--line);border-radius:24px;overflow:hidden;margin-bottom:24px;box-shadow:var(--shadow)}
+.deal .media{display:flex;flex-direction:column}
+.deal .media .thumb{flex:1;margin:16px;border-radius:16px}
+.hookband{background:radial-gradient(140% 160% at 20% 0%,var(--hero-b),var(--hero-a) 70%);color:#fff;padding:18px 22px;display:grid;gap:8px}
+.hook{margin:0;font:800 clamp(22px,3vw,30px)/1.05 var(--f-display);text-transform:uppercase;letter-spacing:-.01em;text-wrap:balance}
+.deal .info{display:flex;flex-direction:column;gap:16px;min-width:0;padding:24px;border-left:1px solid var(--line)}
+.deal h2{margin:0;font:600 19px/1.35 var(--f-body)}
+.ticket{background:var(--lavanda);color:var(--noite);border-radius:18px;padding:16px 20px;display:grid;gap:4px;border:1.5px solid #E1D0F5}
+.ticket .from{font:600 14px/1.2 var(--f-display);color:#6A5A84}
+.ticket .to{font:800 46px/1 var(--f-display);color:var(--noite)}
+.ticket .obs{font-size:13px;color:var(--profundo);font-weight:600}
+.copy{display:flex;align-items:center;gap:10px;border:1.5px dashed var(--violeta);border-radius:999px;padding:6px 6px 6px 18px}
+.copy span{font:600 13px/1 var(--f-display);text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.copy code{font:800 18px/1 var(--f-display);letter-spacing:.06em;color:var(--violeta);flex:1;min-width:0;overflow-wrap:anywhere}
+.copy button{border:0;background:var(--cta);color:var(--cta-ink);border-radius:999px;padding:8px 16px;font:600 14px/1 var(--f-display);cursor:pointer}
+.desc{margin:0;color:var(--muted);max-width:60ch}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.row .btn{flex:1 1 160px}
+.cta-big{font-size:17px;padding:14px 18px}
+@media (max-width:760px){.deal{grid-template-columns:1fr}.deal .info{border-left:0;border-top:1px solid var(--line);padding:16px}}
+.box{background:radial-gradient(140% 160% at 20% 0%,var(--hero-b),var(--hero-a) 70%);color:#fff;border-radius:20px;padding:18px 20px;display:flex;align-items:center;gap:12px 16px;flex-wrap:wrap;margin-bottom:32px}
+.box p{margin:0;flex:1 1 260px;font:700 18px/1.3 var(--f-display)}
+.box p em{font-style:normal;color:#B57BFF}
+
+/* Rodapé */
+footer{border-top:1px solid var(--line);color:var(--muted);font-size:13px;background:var(--surface)}
+footer .wrap{padding-block:24px 32px;display:grid;gap:8px}
+footer .wm{font-size:20px;color:var(--ink)}
+footer .assin{margin:0 0 6px;font:600 13px/1.3 var(--f-display);color:var(--ink)}
+footer p{margin:0;max-width:85ch}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--noite);color:#fff;padding:10px 18px;border-radius:999px;font:600 14px/1.2 var(--f-display);z-index:50}
+@media (max-width:620px){.topbar p{display:none}.topbar .wrap{justify-content:center}.top .wrap{gap:10px}.search{flex:1 1 100%}}
+@media (max-width:520px){.feed{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.body{padding:10px}.price strong{font-size:19px}.title{font-size:13.5px}.card .btn-go{font-size:13px;padding:9px 10px}.thumb{margin:6px 6px 0}.selo{display:none}.wm{font-size:22px}}
+@media (prefers-reduced-motion:no-preference){.card{transition:transform .15s ease,box-shadow .15s ease}.card:hover{transform:translateY(-2px)}}
+</style>
+</head>
+<body>
+
+<div class="demo" id="demoBar" hidden>Modo demonstração: ofertas de exemplo. O instalador liga o site ao banco de dados.</div>
+
+<div class="topbar">
+  <div class="wrap">
+    <p>Ofertas reais garimpadas pela nossa AI em Amazon, Shopee e Mercado Livre. Entre no grupo e receba primeiro!</p>
+    <nav class="join" aria-label="Entrar nos grupos">
+      <a class="btn btn-zap" id="lnkZap" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.8-1.4.1-.2 0-.3 0-.5l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.9 11.9 0 0 0 4.6 4c1.7.7 2.3.8 3.2.7a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .1-1.3c0-.1-.2-.2-.4-.3Z"/></svg><span>WhatsApp</span></a>
+      <a class="btn btn-gram" id="lnkGram" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.6 3.2 2.9 10.4c-1.3.5-1.3 1.2-.2 1.6l4.8 1.5 1.8 5.6c.2.6.4.8.9.8.4 0 .6-.2.9-.5l2.3-2.2 4.8 3.5c.9.5 1.5.2 1.7-.8l3.1-14.7c.3-1.3-.5-1.9-1.4-1.5ZM8.4 13.2l9.9-6.2c.5-.3.9-.1.5.2l-8.4 7.6-.3 3.5-1.7-5.1Z"/></svg><span>Telegram</span></a>
+    </nav>
+  </div>
+</div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#" id="home" aria-label="Eh Meu Aí, página inicial"><span class="wm"><span>Eh</span><span class="v">Meu</span><span class="tag">Aí</span></span></a>
+    <label class="search" for="q">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" type="search" placeholder="Buscar produto, marca ou categoria" autocomplete="off">
+    </label>
+  </div>
+</header>
+
+<main class="wrap" id="app" aria-live="polite"></main>
+
+<footer>
+  <div class="wrap">
+    <span class="wm" aria-hidden="true"><span>Eh</span><span class="v">Meu</span><span class="tag">Aí</span></span>
+    <p class="assin">A AI que acha as melhores oportunidades pra você.</p>
+    <p id="ftDisclaimer">Ao comprar pelos links deste site, podemos receber uma comissão de afiliado, sem nenhum custo extra para você. Preços e cupons podem mudar a qualquer momento; confira na loja antes de finalizar.</p>
+    <p>Amazon e o logotipo da Amazon são marcas comerciais da Amazon.com, Inc. ou de suas afiliadas. Shopee e Mercado Livre são marcas de seus respectivos donos.</p>
+    <p id="ftEmpresa"></p>
+  </div>
+</footer>
+
+<script>
+/* =====================================================================
+   CONFIG — único bloco que você precisa editar
+   ===================================================================== */
+const CONFIG = {
+  nome: "Eh Meu Aí",                         // nome da marca
+  supabaseUrl: "",                              // ex.: https://xxxx.supabase.co
+  supabaseAnonKey: "",                          // chave "anon public" (pode ficar no front)
+  linkWhatsApp: "https://chat.whatsapp.com/SEU-CONVITE",   // fallback se a rotação não responder
+  linkTelegram: "https://t.me/SEU-CANAL",
+  rotacaoGrupos: true,                          // usa a função proximo_grupo() do banco
+  empresa: "",                                  // ex.: "Razão Social LTDA · CNPJ 00.000.000/0001-00"
+  porPagina: 24
+};
+
+/* ===================================================================== */
+const LOJAS = {
+  amazon:       { nome: "Amazon",        cor: "#ff9900" },
+  shopee:       { nome: "Shopee",        cor: "#ee4d2d" },
+  mercadolivre: { nome: "Mercado Livre", cor: "#ffe600" },
+  outra:        { nome: "Loja",          cor: "#8892a6" }
+};
+const CATEGORIAS = { casa:"Casa e cozinha", tech:"Tecnologia", beleza:"Beleza", bebe:"Bebê e infantil", mercado:"Mercado", games:"Games", moda:"Moda", ferramentas:"Ferramentas", geral:"Outros" };
+
+const LIVE = !!(CONFIG.supabaseUrl && CONFIG.supabaseAnonKey);
+const ORIGEM = (() => { try { return new URLSearchParams(location.search).get("src") || "site"; } catch { return "site"; } })();
+
+/* Ofertas de exemplo (aparecem só no modo demonstração) */
+const h = n => new Date(Date.now() - n * 36e5).toISOString();
+const DEMO = [
+  { id:"d1", slug:"caixa-de-som-pulse-burst-15-850w-sp404", loja:"mercadolivre", categoria:"tech", titulo:"Caixa de Som Burst 15 pol. 850W RMS Pulse SP404 Preto", gancho:"Se eu fosse síndico, ia liberar som alto na piscina", preco_de:999, preco_por:607, cupom:"PROMOML", link_afiliado:"#", publicado_em:h(.3), status:"ativa", descricao:"Bluetooth, entrada para microfone e guitarra, rodinhas e alça para levar para qualquer lado." },
+  { id:"d2", slug:"kit-12-utensilios-cozinha-silicone", loja:"mercadolivre", categoria:"casa", titulo:"Kit com 12 Utensílios de Cozinha em Silicone com Cabo de Madeira", gancho:"Não estraga o antiaderente das panelas", preco_de:60, preco_por:39, link_afiliado:"#", publicado_em:h(.8), status:"ativa", observacao:"Vendido por loja oficial" },
+  { id:"d3", slug:"frigideira-ceramica-antiaderente-cabo-madeira", loja:"amazon", categoria:"casa", titulo:"Frigideira Cerâmica Antiaderente Premium, cabo de madeira, fundo de indução", gancho:"Ovo frito sem uma gota de óleo", preco_de:64.91, preco_por:47.40, link_afiliado:"#", publicado_em:h(1.2), status:"ativa" },
+  { id:"d4", slug:"toalha-umedecida-24-pacotes", loja:"amazon", categoria:"bebe", titulo:"Toalha Umedecida 45 unidades, caixa com 24 pacotes", gancho:"Estoque de lenço para o ano inteiro", preco_de:12.98, preco_por:5.99, link_afiliado:"#", publicado_em:h(2), status:"ativa", observacao:"Com Programe e Poupe" },
+  { id:"d5", slug:"kit-azeite-extra-virgem-1l", loja:"shopee", categoria:"mercado", titulo:"Kit Azeite de Oliva Extra Virgem Andorinha 1L", gancho:"Azeite bom pelo preço de óleo", preco_por:38.90, link_afiliado:"#", publicado_em:h(3), status:"ativa", cupom:"SHOPEE10" },
+  { id:"d6", slug:"gimbal-estabilizador-celular-3-eixos", loja:"amazon", categoria:"tech", titulo:"Estabilizador de Celular Gimbal 3 Eixos com rastreamento de rosto", gancho:"Vídeo de criador sem tremedeira", preco_de:399.99, preco_por:270.72, link_afiliado:"#", publicado_em:h(4), status:"ativa" },
+  { id:"d7", slug:"suporte-shampoo-aluminio-sem-furo", loja:"shopee", categoria:"casa", titulo:"Suporte de Shampoo em alumínio, prateleira de banheiro sem furo", gancho:"Banheiro organizado sem furadeira", preco_por:24.99, link_afiliado:"#", publicado_em:h(5), status:"ativa" },
+  { id:"d8", slug:"cafeteira-eletrica-programavel-32-xicaras", loja:"amazon", categoria:"casa", titulo:"Cafeteira Elétrica Programável, jarra inox, 32 xícaras, 220V", gancho:"Acorda com o café pronto", preco_de:244.99, preco_por:228.85, link_afiliado:"#", publicado_em:h(6), status:"esgotada" },
+  { id:"d9", slug:"bundle-nintendo-switch-2-pro-controller", loja:"amazon", categoria:"games", titulo:"Bundle Console Nintendo Switch 2 + Pro Controller", gancho:"O combo que ninguém acha barato, até hoje", preco_de:5199.81, preco_por:4211.04, link_afiliado:"#", publicado_em:h(7), status:"ativa", observacao:"Em até 10x sem juros" },
+  { id:"d10", slug:"kit-mascara-reconstrutora-cachos", loja:"amazon", categoria:"beleza", titulo:"Kit Encrespando Modelando a Juba com Máscara Reconstrutora", gancho:"Cacho definido o dia inteiro", preco_de:119, preco_por:94.05, link_afiliado:"#", publicado_em:h(9), status:"ativa" }
+];
+
+/* ---------- Utilitários ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const brl = v => v == null ? "" : Number(v).toLocaleString("pt-BR", { style:"currency", currency:"BRL" });
+const pct = o => o.desconto_pct ?? (o.preco_de > o.preco_por ? Math.round(100 * (o.preco_de - o.preco_por) / o.preco_de) : null);
+function ago(iso){
+  const m = Math.max(0, Math.round((Date.now() - new Date(iso)) / 6e4));
+  if (m < 2) return "agora";
+  if (m < 60) return m + " min";
+  const hh = Math.round(m / 60);
+  if (hh < 24) return hh + "h";
+  const d = Math.round(hh / 24);
+  return d === 1 ? "ontem" : d + " dias";
+}
+function toast(msg){
+  const t = document.createElement("div"); t.className = "toast"; t.textContent = msg;
+  document.body.appendChild(t); setTimeout(() => t.remove(), 1800);
+}
+function thumb(o){
+  const label = CATEGORIAS[o.categoria] || "Oferta";
+  const ph = `<div class="ph">${esc(label)}</div>`;
+  const img = o.imagem_url ? `<img src="${esc(o.imagem_url)}" alt="${esc(o.titulo)}" loading="lazy" data-cat="${esc(label)}" onerror="semFoto(this)">` : ph;
+  const p = pct(o);
+  return `<div class="thumb">${img}${p >= 5 ? `<span class="off num">-${p}%</span>` : ""}${o.destaque ? `<span class="selo">Achado da AI</span>` : ""}${o.status === "esgotada" ? `<span class="sold">Esgotou</span>` : ""}</div>`;
+}
+window.semFoto = img => { const d = document.createElement("div"); d.className = "ph"; d.textContent = img.dataset.cat || "Oferta"; img.replaceWith(d); };
+function storeTag(o){
+  const l = LOJAS[o.loja] || LOJAS.outra;
+  return `<span class="store"><i style="background:${l.cor}"></i>${esc(l.nome)}</span>`;
+}
+
+/* ---------- Dados ---------- */
+async function api(path, opts = {}){
+  const r = await fetch(`${CONFIG.supabaseUrl}/rest/v1/${path}`, {
+    ...opts,
+    headers: { apikey: CONFIG.supabaseAnonKey, ...(CONFIG.supabaseAnonKey.startsWith("eyJ") ? { Authorization: `Bearer ${CONFIG.supabaseAnonKey}` } : {}), "Content-Type":"application/json", ...(opts.headers || {}) }
+  });
+  if (!r.ok) throw new Error(`Supabase respondeu ${r.status}`);
+  return r.status === 204 ? null : r.json();
+}
+async function listar({ loja, categoria, busca, pagina = 0 }){
+  if (!LIVE){
+    let l = DEMO.slice();
+    if (loja) l = l.filter(o => o.loja === loja);
+    if (categoria) l = l.filter(o => o.categoria === categoria);
+    if (busca) { const b = busca.toLowerCase(); l = l.filter(o => o.titulo.toLowerCase().includes(b)); }
+    return l;
+  }
+  const q = new URLSearchParams({ select:"*", status:"in.(ativa,esgotada)", order:"destaque.desc,publicado_em.desc", limit:String(CONFIG.porPagina), offset:String(pagina * CONFIG.porPagina) });
+  if (loja) q.set("loja", "eq." + loja);
+  if (categoria) q.set("categoria", "eq." + categoria);
+  if (busca) q.set("titulo", "ilike.*" + busca.replace(/[*,()]/g," ") + "*");
+  return api("ofertas?" + q);
+}
+async function buscarSlug(slug){
+  if (!LIVE) return DEMO.find(o => o.slug === slug) || null;
+  const r = await api("ofertas?select=*&slug=eq." + encodeURIComponent(slug) + "&limit=1");
+  return r[0] || null;
+}
+function registrarClique(o, pagina){
+  if (!LIVE || !o.id) return;
+  fetch(`${CONFIG.supabaseUrl}/rest/v1/cliques`, {
+    method:"POST", keepalive:true,
+    headers:{ apikey:CONFIG.supabaseAnonKey, ...(CONFIG.supabaseAnonKey.startsWith("eyJ") ? { Authorization:`Bearer ${CONFIG.supabaseAnonKey}` } : {}), "Content-Type":"application/json", Prefer:"return=minimal" },
+    body: JSON.stringify({ oferta_id:o.id, origem:ORIGEM, pagina })
+  }).catch(() => {});
+}
+async function linksGrupos(){
+  $("#lnkZap").href = CONFIG.linkWhatsApp;
+  $("#lnkGram").href = CONFIG.linkTelegram;
+  if (!LIVE || !CONFIG.rotacaoGrupos) return;
+  for (const [canal, el] of [["whatsapp","#lnkZap"],["telegram","#lnkGram"]]){
+    try {
+      const link = await api("rpc/proximo_grupo", { method:"POST", body: JSON.stringify({ p_canal: canal }) });
+      if (link) document.querySelectorAll(`[data-join="${canal}"], ${el}`).forEach(a => a.href = link);
+    } catch {}
+  }
+}
+
+/* ---------- Telas ---------- */
+const estado = { loja:"", categoria:"", busca:"", pagina:0, itens:[] };
+let cache = {};
+
+function card(o){
+  const go = !o.link_afiliado || o.link_afiliado === "#"
+    ? `<span class="btn btn-ghost" style="width:100%">Link pendente</span>`
+    : o.status === "esgotada"
+    ? `<span class="btn btn-ghost" style="width:100%">Esgotou</span>`
+    : `<a class="btn btn-go" href="${esc(o.link_afiliado)}" target="_blank" rel="noopener sponsored" data-click="${esc(o.slug)}">Ver oferta <span class="seta" aria-hidden="true">→</span></a>`;
+  return `<article class="card ${o.status === "esgotada" ? "out" : ""}">
+    <a class="stretch" href="#${esc(o.slug)}" aria-label="Detalhes: ${esc(o.titulo)}"></a>
+    ${thumb(o)}
+    <div class="body">
+      <div class="meta">${storeTag(o)}<span class="ago">${ago(o.publicado_em)}</span></div>
+      <h3 class="title">${esc(o.titulo)}</h3>
+      ${o.cupom ? `<span class="coupon">Cupom ${esc(o.cupom)}</span>` : ""}
+      <div class="price num">${o.preco_de > o.preco_por ? `<s>${brl(o.preco_de)}</s>` : ""}<strong>${brl(o.preco_por)}</strong></div>
+      ${go}
+    </div>
+  </article>`;
+}
+
+function chips(){
+  const lojas = [["","Todas as lojas"], ...Object.entries(LOJAS).filter(([k]) => k !== "outra").map(([k,v]) => [k, v.nome])];
+  const cats = [["","Tudo"], ...Object.entries(CATEGORIAS)];
+  return `
+    <div class="chips" role="group" aria-label="Loja">${lojas.map(([k,n]) => `<button class="chip" data-loja="${k}" aria-pressed="${estado.loja === k}">${k ? `<i style="background:${LOJAS[k].cor}"></i>` : ""}${esc(n)}</button>`).join("")}</div>
+    <div class="chips" role="group" aria-label="Categoria">${cats.map(([k,n]) => `<button class="chip" data-cat="${k}" aria-pressed="${estado.categoria === k}">${esc(n)}</button>`).join("")}</div>`;
+}
+
+async function telaFeed(){
+  document.title = CONFIG.nome;
+  $("#app").innerHTML = `
+    <button type="button" class="banner" id="bannerBtn" aria-label="Ver ofertas">
+      <img src="img/banner.webp" width="1968" height="469" alt="A AI achou. Eh meu aí! Nossa AI garimpa milhares de ofertas, compara preços e encontra oportunidades que realmente valem a pena. Amazon, Shopee e Mercado Livre.">
+    </button>
+    <section class="hero">
+      <div>
+        <span class="pill">Ofertas do dia</span>
+        <h1>A AI achou.<br><em>Eh meu aí</em></h1>
+        <p>Nossa AI garimpa Amazon, Shopee e Mercado Livre, compara preços e encontra oportunidades que realmente valem a pena.</p>
+      </div>
+      <img class="robo" src="img/robo.png" alt="" width="230" height="258">
+    </section>
+    <div class="stats num" id="stats" aria-label="Resumo das ofertas">
+        <div class="stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8Z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg><b id="stAtivas">–</b><span>Ofertas no ar</span></div>
+        <div class="stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 20V14M10 20V9M16 20V4M22 20H2"/></svg><b id="stMaior">–</b><span>Maior desconto</span></div>
+        <div class="stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 9 4.5 4h15L21 9M3 9h18v11H3zM9 20v-6h6v6"/></svg><b id="stLojas">–</b><span>Lojas</span></div>
+      </div>
+    <section class="filters">
+      <div id="chips">${chips()}</div>
+    </section>
+    <section class="feed" id="feed" aria-label="Ofertas"></section>
+    <div class="more"><button class="btn btn-ghost" id="mais" hidden>Ver mais ofertas</button></div>`;
+  bindFeed();
+  await carregar(true);
+}
+
+async function carregar(reset){
+  if (reset){ estado.pagina = 0; estado.itens = []; }
+  const feed = $("#feed");
+  try {
+    const novos = await listar(estado);
+    novos.forEach(o => cache[o.slug] = o);
+    estado.itens = estado.itens.concat(novos);
+    feed.innerHTML = estado.itens.length
+      ? estado.itens.map(card).join("")
+      : (estado.loja || estado.categoria || estado.busca)
+        ? `<p class="empty">Nenhuma oferta com esse filtro agora. Tente outra loja ou categoria.</p>`
+        : `<p class="empty">A AI está garimpando as primeiras ofertas. Entre no grupo do WhatsApp para receber antes de todo mundo.</p>`;
+    $("#mais").hidden = !LIVE || novos.length < CONFIG.porPagina;
+    if (reset && !estado.loja && !estado.categoria && !estado.busca) stats(estado.itens);
+  } catch (e) {
+    feed.innerHTML = `<p class="empty">Não deu para carregar as ofertas (${esc(e.message)}). Confira a URL e a chave do Supabase no CONFIG.</p>`;
+  }
+}
+
+function stats(lista){
+  const ativas = lista.filter(o => o.status === "ativa");
+  const maior = Math.max(0, ...ativas.map(o => pct(o) || 0));
+  $("#stAtivas").textContent = ativas.length + (LIVE && lista.length >= CONFIG.porPagina ? "+" : "");
+  $("#stMaior").textContent = maior ? maior + "%" : "–";
+  $("#stLojas").textContent = new Set(ativas.map(o => o.loja)).size;
+}
+
+function bindFeed(){
+  $("#bannerBtn").addEventListener("click", () => $("#chips").scrollIntoView({ behavior: "smooth", block: "start" }));
+  $("#chips").addEventListener("click", e => {
+    const b = e.target.closest(".chip"); if (!b) return;
+    if (b.dataset.loja !== undefined) estado.loja = b.dataset.loja;
+    if (b.dataset.cat !== undefined) estado.categoria = b.dataset.cat;
+    $("#chips").innerHTML = chips(); carregar(true);
+  });
+  $("#mais").addEventListener("click", () => { estado.pagina++; carregar(false); });
+}
+
+async function telaOferta(slug){
+  const app = $("#app");
+  let o = cache[slug];
+  if (!o){ try { o = await buscarSlug(slug); } catch {} }
+  if (!o){
+    app.innerHTML = `<a class="back" href="#">← Todas as ofertas</a><p class="empty">Essa oferta saiu do ar. Veja as que estão valendo agora.</p>`;
+    return;
+  }
+  cache[slug] = o;
+  document.title = `${o.titulo} por ${brl(o.preco_por)} | ${CONFIG.nome}`;
+  const share = `https://wa.me/?text=${encodeURIComponent(`${o.titulo} por ${brl(o.preco_por)}\n${location.href.split("#")[0]}#${o.slug}`)}`;
+  const esgotada = o.status === "esgotada";
+  app.innerHTML = `
+    <a class="back" href="#">← Todas as ofertas</a>
+    <article class="deal">
+      <div class="media">
+        <div class="hookband"><span class="pill">Achado da AI · ${esc(CATEGORIAS[o.categoria] || "Oferta")}</span>${o.gancho ? `<p class="hook">${esc(o.gancho)}</p>` : ""}</div>
+        ${thumb(o)}
+      </div>
+      <div class="info">
+        <div class="meta">${storeTag(o)}<span class="ago">postado há ${ago(o.publicado_em)}</span></div>
+        <h2>${esc(o.titulo)}</h2>
+        <div class="ticket num">
+          ${o.preco_de > o.preco_por ? `<span class="from">De <s>${brl(o.preco_de)}</s> por</span>` : `<span class="from">Por</span>`}
+          <span class="to">${brl(o.preco_por)}</span>
+          ${o.observacao ? `<span class="obs">${esc(o.observacao)}</span>` : ""}
+        </div>
+        ${o.cupom ? `<div class="copy"><span>Cupom</span><code id="cupom">${esc(o.cupom)}</code><button id="copiar">Copiar</button></div>` : ""}
+        ${o.descricao ? `<p class="desc">${esc(o.descricao)}</p>` : ""}
+        ${!o.link_afiliado || o.link_afiliado === "#"
+          ? `<span class="btn btn-ghost cta-big">Link de afiliado pendente</span>`
+          : esgotada
+          ? `<span class="btn btn-ghost cta-big">Essa oferta esgotou</span>`
+          : `<a class="btn btn-go cta-big" href="${esc(o.link_afiliado)}" target="_blank" rel="noopener sponsored" data-click="${esc(o.slug)}">Ver oferta na ${esc((LOJAS[o.loja] || LOJAS.outra).nome)} <span class="seta" aria-hidden="true">→</span></a>`}
+        <div class="row">
+          <a class="btn btn-ghost" href="${share}" target="_blank" rel="noopener">Mandar para um amigo</a>
+        </div>
+      </div>
+    </article>
+    <section class="box">
+      <p>A AI achou, <em>você recebe primeiro.</em> Entre no grupo.</p>
+      <a class="btn btn-zap" data-join="whatsapp" href="${esc($("#lnkZap").href)}" target="_blank" rel="noopener">Entrar no WhatsApp</a>
+      ${CONFIG.linkTelegram ? `<a class="btn btn-gram" data-join="telegram" href="${esc($("#lnkGram").href)}" target="_blank" rel="noopener">Entrar no Telegram</a>` : ""}
+    </section>`;
+  const c = $("#copiar");
+  if (c) c.addEventListener("click", async () => {
+    try { await navigator.clipboard.writeText(o.cupom); toast("Cupom copiado"); }
+    catch { const r = document.createRange(); r.selectNodeContents($("#cupom")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); toast("Selecionado: copie com Ctrl+C"); }
+  });
+  window.scrollTo(0, 0);
+}
+
+/* ---------- Rotas e eventos globais ---------- */
+document.addEventListener("click", e => {
+  const a = e.target.closest("[data-click]");
+  if (a){ const o = cache[a.dataset.click]; if (o) registrarClique(o, location.hash.length > 1 ? "oferta" : "feed"); }
+});
+function rota(){
+  const slug = location.hash.slice(1);
+  slug ? telaOferta(slug) : telaFeed();
+}
+window.addEventListener("hashchange", rota);
+
+(function init(){
+  let t;
+  $("#q").addEventListener("input", e => {
+    clearTimeout(t);
+    t = setTimeout(() => {
+      estado.busca = e.target.value.trim();
+      if (location.hash.length > 1) location.hash = ""; else carregar(true);
+    }, 300);
+  });
+  $("#ftEmpresa").textContent = CONFIG.empresa;
+  $("#demoBar").hidden = LIVE;
+  if (!CONFIG.linkTelegram) $("#lnkGram").hidden = true;
+  linksGrupos();
+  rota();
+})();
+</script>
+</body>
+</html>

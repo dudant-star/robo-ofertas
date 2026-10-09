@@ -1,0 +1,15 @@
+ROBÔ DE OFERTAS · pacote de instalação
+
+O passo a passo completo está no guia "Robô de Ofertas — Guia de Instalação do Zero".
+
+Conteúdo desta pasta:
+  banco.sql        → cole no Supabase (SQL Editor) e clique em Run. Etapa 2.
+  instalar.sh      → roda no servidor e instala tudo sozinho. Etapa 5.
+  site/            → o site de ofertas (o instalador já configura e publica).
+  workflows/       → os 3 robôs para importar no n8n. Etapa 6.
+     1-bot-telegram.json       seu painel no Telegram
+     2-escuta-grupos.json      lê o Clube Kotas e outros grupos
+     3-shopee-automatico.json  posta ofertas da Shopee sozinho (opcional)
+
+Nada aqui tem senha ou chave: pode subir no GitHub como repositório público.
+As suas chaves ficam só no servidor, no arquivo /opt/robo-ofertas/.env.
