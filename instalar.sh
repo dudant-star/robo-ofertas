@@ -329,9 +329,12 @@ for inst in postagem escuta; do
       -d '{"instanceName":"'"$inst"'","integration":"WHATSAPP-BAILEYS","qrcode":false}')
   case "$R" in 200|201) ok "Instância do WhatsApp criada: $inst" ;; 403|409|400) ok "Instância do WhatsApp já existia: $inst" ;; *) aviso "Instância $inst: resposta $R (o bot tenta de novo no /conectar)" ;; esac
 done
-R=$(curl -s -o /dev/null -w "%{http_code}" -X POST http://127.0.0.1:8080/webhook/set/escuta -H "apikey: $EK" -H "Content-Type: application/json" \
-  -d '{"webhook":{"enabled":true,"url":"http://n8n:5678/webhook/escuta-ofertas","byEvents":false,"base64":false,"events":["MESSAGES_UPSERT"]}}')
-case "$R" in 200|201) ok "Chip de escuta ligado ao robô" ;; *) aviso "Não consegui ligar o chip de escuta ao robô agora (código $R). O bot refaz isso no /conectar escuta." ;; esac
+# As duas conexões levam ao robô (quando o mesmo chip faz as duas coisas, as mensagens podem chegar por qualquer uma)
+for inst in escuta postagem; do
+  R=$(curl -s -o /dev/null -w "%{http_code}" -X POST http://127.0.0.1:8080/webhook/set/$inst -H "apikey: $EK" -H "Content-Type: application/json" \
+    -d '{"webhook":{"enabled":true,"url":"http://n8n:5678/webhook/escuta-ofertas","byEvents":false,"base64":false,"events":["MESSAGES_UPSERT"]}}')
+  case "$R" in 200|201) ok "Chip de $inst ligado à escuta do robô" ;; *) aviso "Não consegui ligar o chip de $inst à escuta agora (código $R). O bot refaz isso no /conectar." ;; esac
+done
 TG="https://api.telegram.org/bot${V[TELEGRAM_BOT_TOKEN]}"
 curl -s -X POST "$TG/setWebhook" -H "Content-Type: application/json" \
   -d '{"url":"https://n8n.'"$D"'/webhook/telegram-bot","secret_token":"'"${V[TELEGRAM_SECRET]}"'","allowed_updates":["message","callback_query"],"drop_pending_updates":true}' \
