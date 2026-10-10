@@ -351,6 +351,7 @@ curl -s -X POST "$TG/setMyCommands" -H "Content-Type: application/json" -d '{"co
  {"command":"ofertas","description":"Listar ofertas do site (para apagar)"},
  {"command":"apagar","description":"Tirar oferta do site: /apagar 3"},
  {"command":"esgotou","description":"Marcar como esgotada: /esgotou 3"},
+ {"command":"rapido","description":"Publicar na hora ao receber o seu link"},
  {"command":"shopee","description":"auto, previa ou desliga"},
  {"command":"palavras","description":"O que a Shopee automática procura"}]}' >/dev/null
 
