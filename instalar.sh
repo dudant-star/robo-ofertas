@@ -264,6 +264,9 @@ services:
     command: redis-server --appendonly yes
     volumes:
       - redis_data:/data
+  gotenberg:
+    image: gotenberg/gotenberg:8
+    restart: unless-stopped
 volumes:
   caddy_data:
   caddy_config:
@@ -313,6 +316,7 @@ ok "Configuração gravada em $DEST"
 
 passo "6/8 · Ligando tudo (na primeira vez leva de 3 a 8 minutos)"
 cd "$DEST" || morrer "Não achei $DEST"
+docker rm -f gotenberg >/dev/null 2>&1 || true   # gerador de imagens instalado à mão antes (agora vem no docker compose)
 docker compose pull -q || morrer "Não consegui baixar os programas. Confira a internet do servidor."
 docker compose up -d --remove-orphans || morrer "Algo falhou ao ligar. Rode: cd $DEST && docker compose logs --tail 50"
 echo -n "Esperando a Evolution (WhatsApp) responder"
@@ -352,6 +356,7 @@ curl -s -X POST "$TG/setMyCommands" -H "Content-Type: application/json" -d '{"co
  {"command":"apagar","description":"Tirar oferta do site: /apagar 3"},
  {"command":"esgotou","description":"Marcar como esgotada: /esgotou 3"},
  {"command":"rapido","description":"Publicar na hora ao receber o seu link"},
+ {"command":"insta","description":"Instagram automático: liga, stories, desliga, teste"},
  {"command":"shopee","description":"auto, previa ou desliga"},
  {"command":"palavras","description":"O que a Shopee automática procura"}]}' >/dev/null
 
