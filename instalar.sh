@@ -92,6 +92,12 @@ perguntar ML_NO_SITE "Esconder ofertas do Mercado Livre do site? (sim/nao)" "nao
 
 # Gerados automaticamente (nunca mudam depois da primeira vez)
 gera() { openssl rand -hex "$1" 2>/dev/null || head -c "$1" /dev/urandom | od -An -tx1 | tr -d ' \n'; }
+# a chave do n8n tem que ser sempre a mesma que já está gravada no volume dele
+CFG_N8N=/var/lib/docker/volumes/robo-ofertas_n8n_data/_data/config
+if [ -f "$CFG_N8N" ]; then
+  K_N8N=$(python3 -c "import json;print(json.load(open('$CFG_N8N')).get('encryptionKey',''))" 2>/dev/null)
+  [ -n "$K_N8N" ] && V[N8N_ENCRYPTION_KEY]="$K_N8N"
+fi
 V[N8N_ENCRYPTION_KEY]="${V[N8N_ENCRYPTION_KEY]:-$(gera 24)}"
 V[EVOLUTION_API_KEY]="${V[EVOLUTION_API_KEY]:-$(gera 20)}"
 V[POSTGRES_PASSWORD]="${V[POSTGRES_PASSWORD]:-$(gera 16)}"
@@ -357,6 +363,7 @@ curl -s -X POST "$TG/setMyCommands" -H "Content-Type: application/json" -d '{"co
  {"command":"esgotou","description":"Marcar como esgotada: /esgotou 3"},
  {"command":"rapido","description":"Publicar na hora ao receber o seu link"},
  {"command":"insta","description":"Instagram automático: liga, stories, desliga, teste"},
+ {"command":"amazon","description":"Amazon do Kotas: auto ou previa"},
  {"command":"shopee","description":"auto, previa ou desliga"},
  {"command":"palavras","description":"O que a Shopee automática procura"}]}' >/dev/null
 
